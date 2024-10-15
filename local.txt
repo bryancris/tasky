@@ -1,0 +1,68 @@
+Local Development Setup Instructions
+
+Follow these steps to set up and run the Taskify application locally:
+
+0. Clone the repository (if not already done):
+   a. Open a terminal
+   b. Run: git clone https://github.com/your-repo-url/taskify.git
+   c. Navigate to the project directory: cd taskify
+
+1. Set up local PostgreSQL database:
+   a. Install PostgreSQL on your local machine if not already installed.
+   b. Create a new database for Taskify:
+      - Open psql command line tool
+      - Run: CREATE DATABASE taskify;
+
+2. Configure environment variables:
+   a. In the client directory (/Users/bryanmcafee/tasky/client), create a .env.local file:
+      - Copy the contents of .env.example (if it exists) or create a new file
+   b. Add the following variables to .env.local:
+      DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/taskify?schema=public"
+      NEXTAUTH_URL="http://localhost:3000"
+      NEXTAUTH_SECRET="your-nextauth-secret"
+      AUTH_SECRET="your-auth-secret"
+   c. Replace USER and PASSWORD with your local PostgreSQL credentials
+
+3. Update Next.js configuration:
+   a. Open /Users/bryanmcafee/tasky/client/next.config.mjs
+   b. Ensure that the config is set up for local development:
+      - Remove any Vercel-specific configurations
+      - Add any necessary local development settings
+
+4. Set up local development server:
+   a. Open a terminal and navigate to the client directory (/Users/bryanmcafee/tasky/client)
+   b. Run: npm install (if you haven't already)
+   c. Run: npx prisma generate
+   d. Run: npx prisma db push
+
+5. Update API routes for local development:
+   a. Review and update API routes in /Users/bryanmcafee/tasky/client/app/api/ directory
+   b. Ensure that all API routes are using the local database connection
+
+6. Start the local development server:
+   a. In the client directory, run: npm run dev
+   b. The application should now be running on http://localhost:3000
+
+7. Test the application:
+   a. Open a web browser and navigate to http://localhost:3000
+   b. Test the registration process and other features
+   c. Check the console for any error messages
+   d. Access the health check endpoint at http://localhost:3000/api/healthcheck
+
+Troubleshooting:
+- If you encounter database connection issues, double-check your DATABASE_URL in .env.local
+- Ensure all required environment variables are set in .env.local
+- If you encounter build errors, make sure all dependencies are installed (npm install)
+- For API-related issues, check the server logs in the terminal where you ran npm run dev
+
+Additional Notes:
+- Any changes you make to the code will be automatically reflected in the local development server (hot reloading)
+- To test production builds locally, you can run:
+  npm run build
+  npm start
+- Remember to never commit your .env.local file to version control
+- If you encounter CORS issues, ensure that your API routes are configured to allow requests from http://localhost:3000
+- If you make changes to the database schema, update the Prisma schema file at /Users/bryanmcafee/tasky/client/prisma/schema.prisma
+  and run `npx prisma db push` to apply the changes
+
+By following these steps, you should have a fully functional local development environment for Taskify without relying on Vercel deployment.
